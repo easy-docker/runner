@@ -9,4 +9,6 @@ RUN wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.
     && tar zxvf apache-maven-3.9.8-bin.tar.gz && rm -f apache-maven-3.9.8-bin.tar.gz \
     && mv apache-maven-3.9.8 /usr/local/ \
     && echo 'export MAVEN_HOME=/usr/local/apache-maven-3.9.8' >> /etc/profile \
-    && echo 'export PATH=$PATH:$MAVEN_HOME/bin' >> /etc/profile
+    && echo 'export PATH=$PATH:$MAVEN_HOME/bin' >> /etc/profile \
+    && echo 'export MAVEN_HOME=/usr/local/apache-maven-3.9.8' >> ~/.bashrc \
+    && echo 'export PATH=$PATH:$MAVEN_HOME/bin' >> ~/.bashrc
