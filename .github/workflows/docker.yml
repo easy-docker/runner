@@ -1,0 +1,32 @@
+name: Publish docker
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docker.Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  push_to_registry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get_image_name
+        run: |
+          FILE_NAME=docker
+          IMAGE_NAME=${{ github.actor }}/runner-images:ubuntu-${{ FILE_NAME }}
+          echo IMAGE_NAME=$IMAGE_NAME
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push to Docker Hub
+        run: |
+          docker build -f ${{ env.FILE_NAME }}.Dockerfile -t ${{ env.IMAGE_NAME }} .
+          docker push ${{ env.IMAGE_NAME }}
